@@ -2,7 +2,6 @@
 
 #include <stdio.h>
 #include <assert.h>
-#include <conio.h>
 
 void Test1StrMax(){
     int max;
@@ -26,12 +25,11 @@ void Test3StrMax(){
 }
 
 int main() {
-	Test1StrMax();
+    Test1StrMax();
     Test2StrMax();
     Test3StrMax();
 	
-	printf("Tests passed successfully!\n");
-    getch();
+    printf("Tests passed successfully!\n");
 
-	return 0;
+    return 0;
 }
