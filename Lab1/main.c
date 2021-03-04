@@ -3,7 +3,6 @@
 #include <string.h>
 #include <ctype.h>
 #include <malloc.h>
-#include <conio.h>
 
 #include "main.h"
 
@@ -123,8 +122,7 @@ int main()
     PrintLine(strlen(strMulti));
     printf("\n");
     printf(strMulti);
-    printf("\n\nPress any key to close...");
-    getch();
+    printf("\n");
 
     return 0;
 }

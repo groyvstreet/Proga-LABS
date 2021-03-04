@@ -31,7 +31,6 @@ int main() {
     Test3StrMax();
 	
 	printf("Tests passed successfully!\n");
-    getch();
 
 	return 0;
 }
