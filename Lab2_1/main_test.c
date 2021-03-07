@@ -1,6 +1,5 @@
 #include "main.h"
 #include <stdio.h>
-#include <conio.h>
 #include <assert.h>
 
 void Test1CostTariff()
@@ -67,7 +66,6 @@ int main()
     Test6CostTariff();
 
     printf("Tests passed successfully!\n");
-    getch();
 
     return 0;
 }
