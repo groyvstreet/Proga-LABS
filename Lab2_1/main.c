@@ -191,7 +191,7 @@ int Amount(char *text)
     do
     {
         inputCorrect = true;
-        printf(text);
+        printf("%s", text);
         scanf("%s", input);
 
         for (i = 0; i < strlen(input); i++)
