@@ -15,6 +15,7 @@ jobs:
         cd Lab2_1/
         make test
         ./test
+        cd ..
         cd Lab2_2/
         make test
         ./test
