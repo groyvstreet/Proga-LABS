@@ -4,6 +4,14 @@
 #include <stdbool.h>
 #include <string.h>
 #include <ctype.h>
+#include <conio.h>
+
+float noLimits[8] = {0.052, 500.0, 0.104, 500.0, 0.078, 0.0, 0.0, 25.89};
+float comfortM[8] = {0.0, 0.0, 0.104, 120.0, 0.078, 0.0208, 10.0, 21.73};
+float comfortL[8] = {0.0, 0.0, 0.0, 0.0, 0.078, 0.0208, 25.0, 31.09};
+float comfortXL[8] = {0.0, 0.0, 0.0, 0.0, 0.078, 0.0208, 50.0, 41.49};
+float comfortS[8] = {0.0, 0.0, 0.104, 60.0, 0.078, 0.0208, 1.0, 13.83};
+float start[8] = {0.0, 0.0, 0.104, 10.0, 0.078, 0.0208, 0.5, 8.93};
 
 void OptimalTariff(bool dataFilled, int minutesInNet, int minutesInOtherNet, int smsAmount, int megabytes)
 {
@@ -11,12 +19,6 @@ void OptimalTariff(bool dataFilled, int minutesInNet, int minutesInOtherNet, int
     int min;
     int index;
     int i;
-    float noLimits[8] = {0.052, 500.0, 0.104, 500.0, 0.078, 0.0, 0.0, 25.89};
-    float comfortM[8] = {0.0, 0.0, 0.104, 120.0, 0.078, 0.0208, 10.0, 21.73};
-    float comfortL[8] = {0.0, 0.0, 0.0, 0.0, 0.078, 0.0208, 25.0, 31.09};
-    float comfortXL[8] = {0.0, 0.0, 0.0, 0.0, 0.078, 0.0208, 50.0, 41.49};
-    float comfortS[8] = {0.0, 0.0, 0.104, 60.0, 0.078, 0.0208, 1.0, 13.83};
-    float start[8] = {0.0, 0.0, 0.104, 10.0, 0.078, 0.0208, 0.5, 8.93};
 
     system("clear");
 
@@ -75,6 +77,7 @@ void OptimalTariff(bool dataFilled, int minutesInNet, int minutesInOtherNet, int
     }
 
     printf("Press any key to continue...");
+    getch();
     system("clear");
 }
 
@@ -101,6 +104,7 @@ void List(float *noLimits, float *comfortM, float *comfortL, float *comfortXL, f
     TariffInfo(comfortS, "Comfort S");
     TariffInfo(start, "Start");
     printf("Press any key to continue...");
+    getch();
     system("clear");
 }
 
@@ -119,6 +123,7 @@ void ContactInfo()
     printf("\tprocurement@A1.by\n");
     printf("\tzakupki@A1.by\n\n");
     printf("Press any key to continue...");
+    getch();
     system("clear");
 }
 
@@ -131,12 +136,6 @@ int main()
     int megabytes;
     char select;
     bool dataFilled;
-    float noLimits[8] = {0.052, 500.0, 0.104, 500.0, 0.078, 0.0, 0.0, 25.89};
-    float comfortM[8] = {0.0, 0.0, 0.104, 120.0, 0.078, 0.0208, 10.0, 21.73};
-    float comfortL[8] = {0.0, 0.0, 0.0, 0.0, 0.078, 0.0208, 25.0, 31.09};
-    float comfortXL[8] = {0.0, 0.0, 0.0, 0.0, 0.078, 0.0208, 50.0, 41.49};
-    float comfortS[8] = {0.0, 0.0, 0.104, 60.0, 0.078, 0.0208, 1.0, 13.83};
-    float start[8] = {0.0, 0.0, 0.104, 10.0, 0.078, 0.0208, 0.5, 8.93};
 
     dataFilled = false;
     system("clear");
@@ -191,7 +190,7 @@ int Amount(char *text)
     do
     {
         inputCorrect = true;
-        printf("%s", text);
+        printf(text);
         scanf("%s", input);
 
         for (i = 0; i < strlen(input); i++)
@@ -267,6 +266,7 @@ bool FillData(int *minutesInNet, int *minutesInOtherNet, int *smsAmount, int *me
     printf("The number of SMS - %d\n", *smsAmount);
     printf("The number  of megabytes per month - %d\n\n", *megabytes);
     printf("Press any key to continue...");
+    getch();
     system("clear");
 
     return true;
