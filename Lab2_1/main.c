@@ -4,7 +4,6 @@
 #include <stdbool.h>
 #include <string.h>
 #include <ctype.h>
-#include <conio.h>
 
 float noLimits[8] = {0.052, 500.0, 0.104, 500.0, 0.078, 0.0, 0.0, 25.89};
 float comfortM[8] = {0.0, 0.0, 0.104, 120.0, 0.078, 0.0208, 10.0, 21.73};
@@ -77,7 +76,6 @@ void OptimalTariff(bool dataFilled, int minutesInNet, int minutesInOtherNet, int
     }
 
     printf("Press any key to continue...");
-    getch();
     system("clear");
 }
 
@@ -104,7 +102,6 @@ void List(float *noLimits, float *comfortM, float *comfortL, float *comfortXL, f
     TariffInfo(comfortS, "Comfort S");
     TariffInfo(start, "Start");
     printf("Press any key to continue...");
-    getch();
     system("clear");
 }
 
@@ -123,7 +120,6 @@ void ContactInfo()
     printf("\tprocurement@A1.by\n");
     printf("\tzakupki@A1.by\n\n");
     printf("Press any key to continue...");
-    getch();
     system("clear");
 }
 
@@ -266,7 +262,6 @@ bool FillData(int *minutesInNet, int *minutesInOtherNet, int *smsAmount, int *me
     printf("The number of SMS - %d\n", *smsAmount);
     printf("The number  of megabytes per month - %d\n\n", *megabytes);
     printf("Press any key to continue...");
-    getch();
     system("clear");
 
     return true;
