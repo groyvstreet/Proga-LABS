@@ -184,7 +184,7 @@ int **CreateArr(int **arr, int size1, int size2)
 
             if (arr[i] == NULL)
             {
-                ClearArr2D(arr, size1);
+                ClearArr2D(arr, i + 1);
                 return NULL;
             }
         }
@@ -193,7 +193,7 @@ int **CreateArr(int **arr, int size1, int size2)
     }
     else
     {
-        ClearArr2D(arr, size1);
+        free(arr);
         return NULL;
     }
 }
