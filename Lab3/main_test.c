@@ -20,7 +20,14 @@ void Test3CreateArr()
 {
     int **arr;
     arr = CreateArr(arr, 10000, 10000);
-    assert(arr != NULL);
+    assert(arr == NULL);
+}
+
+void Test4CreateArr()
+{
+    int **arr;
+    arr = CreateArr(arr, 10000000, 10000);
+    assert(arr == NULL);
 }
 
 int main()
@@ -28,6 +35,7 @@ int main()
     Test1CreateArr();
     Test2CreateArr();
     Test3CreateArr();
+    Test4CreateArr();
     printf("Tests passed successfully!\n");
 
     return 0;
