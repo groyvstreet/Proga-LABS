@@ -30,12 +30,20 @@ void Test4CreateArr()
     assert(arr == NULL);
 }
 
+void Test1CreateArr3D()
+{
+    int ***arr;
+    arr = CreateArr3D(arr, 100, 100, 10);
+    assert(arr == NULL);
+}
+
 int main()
 {
     Test1CreateArr();
     Test2CreateArr();
     Test3CreateArr();
     Test4CreateArr();
+    Test1CreateArr3D();
     printf("Tests passed successfully!\n");
 
     return 0;

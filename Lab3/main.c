@@ -101,94 +101,63 @@ int main()
     l = atoi(input1);
     m = atoi(input2);
     n = atoi(input3);
-    array = (int ***)calloc(l, l * sizeof(int **));
+    array = CreateArr3D(array, l, m, n);
 
-    if(array != NULL)
+    if (array != NULL)
     {
         srand(time(NULL));
 
         for (i = 0; i < l; i++)
         {
-            array[i] = (int **)calloc(m, m * sizeof(int *));
-
-            if(array[i] != NULL)
+            for (j = 0; j < m; j++)
             {
-
-                for (j = 0; j < m; j++)
+                for (y = 0; y < n; y++)
                 {
-                    array[i][j] = (int *)calloc(n, n * sizeof(int));
-
-                    if(array[i][j] != NULL)
-                    {
-                        for (y = 0; y < n; y++)
-                        {
-                            array[i][j][y] = rand() % 2;
-                            printf("%d", array[i][j][y]);
-                        }
-
-                        printf("\n");
-                    }
-                    else
-                    {
-                        printf("Not enough memory!");
-                        array = NULL;
-                        break;
-                    }
+                    array[i][j][y] = rand() % 2;
+                    printf("%d", array[i][j][y]);
                 }
 
                 printf("\n");
             }
-            else
-            {
-                printf("Not enough memory!");
-                array = NULL;
-                break;
-            }
+
+            printf("\n");
         }
 
-        if (array == NULL)
+        projection1 = CreateArr(projection1, l, m);
+        projection2 = CreateArr(projection2, l, n);
+        projection3 = CreateArr(projection3, n, m);
+
+        if (projection1 == NULL || projection2 == NULL || projection3 == NULL)
         {
             printf("Not enough memory!");
         }
         else
         {
 
-            projection1 = CreateArr(projection1, l, m);
-            projection2 = CreateArr(projection2, l, n);
-            projection3 = CreateArr(projection3, n, m);
-
-            if (projection1 == NULL || projection2 == NULL || projection3 == NULL)
+            for (i = 0; i < l; i++)
             {
-                printf("Not enough memory!");
-            }
-            else
-            {
-
-                for (i = 0; i < l; i++)
+                for (j = 0; j < m; j++)
                 {
-                    for (j = 0; j < m; j++)
+                    for (y = 0; y < n; y++)
                     {
-                        for (y = 0; y < n; y++)
+                        if (array[i][j][y] == 1)
                         {
-                            if (array[i][j][y] == 1)
-                            {
-                                projection1[i][j] = 1;
-                                projection2[i][y] = 1;
-                                projection3[y][j] = 1;
-                            }
+                            projection1[i][j] = 1;
+                            projection2[i][y] = 1;
+                            projection3[y][j] = 1;
                         }
                     }
                 }
-
-                ClearArr3D(array, l, m);
-                printf("Projections: \n\n");
-                PrintArr(projection1, l, m);
-                PrintArr(projection2, l, n);
-                PrintArr(projection3, n, m);
-                ClearArr2D(projection1, l);
-                ClearArr2D(projection2, l);
-                ClearArr2D(projection3, n);
             }
+
+            ClearArr3D(array, l, m);
+            printf("Projections: \n\n");
+            PrintArr(projection1, l, m);
+            PrintArr(projection2, l, n);
+            PrintArr(projection3, n, m);
+            ClearArr2D(projection1, l);
+            ClearArr2D(projection2, l);
+            ClearArr2D(projection3, n);
         }
     }
     else
@@ -213,8 +182,9 @@ int **CreateArr(int **arr, int size1, int size2)
         {
             arr[i] = (int *)calloc(size2, size2 * sizeof(int));
 
-            if(arr[i] == NULL)
+            if (arr[i] == NULL)
             {
+                ClearArr2D(arr, size1);
                 return NULL;
             }
         }
@@ -223,6 +193,35 @@ int **CreateArr(int **arr, int size1, int size2)
     }
     else
     {
+        ClearArr2D(arr, size1);
+        return NULL;
+    }
+}
+
+int ***CreateArr3D(int ***arr, int size1, int size2, int size3)
+{
+    int i;
+
+    arr = (int ***)calloc(size1, size1 * sizeof(int *));
+
+    if (arr != NULL)
+    {
+        for (i = 0; i < size1; i++)
+        {
+            arr[i] = CreateArr(arr[i], size2, size3);
+
+            if (arr[i] == NULL)
+            {
+                free(arr);
+                return NULL;
+            }
+        }
+
+        return arr;
+    }
+    else
+    {
+        free(arr);
         return NULL;
     }
 }
