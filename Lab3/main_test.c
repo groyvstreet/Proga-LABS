@@ -20,7 +20,7 @@ void Test3CreateArr()
 {
     int **arr;
     arr = CreateArr(arr, 10000, 10000);
-    assert(arr == NULL);
+    assert(arr != NULL);
 }
 
 void Test4CreateArr()
