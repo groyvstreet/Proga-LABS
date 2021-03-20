@@ -33,7 +33,7 @@ void Test4CreateArr()
 void Test5CreateArr()
 {
     int **arr;
-    arr = CreateArr(arr, 200000, 200000);
+    arr = CreateArr(arr, 20000, 20000);
     assert(arr == NULL);
 }
 
