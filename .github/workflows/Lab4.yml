@@ -1,0 +1,21 @@
+name: lab4test
+
+on:
+  push:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: make
+      run: |
+        cd Lab4/Lab4_1/
+        make test
+        ./test
+        cd ..
+        cd Lab4_2/
+        make test
+        ./test
