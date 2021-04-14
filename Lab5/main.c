@@ -5,7 +5,7 @@
 
 #ifndef TESTING
 
-int main(void)
+int main()
 {
     char input[100];
     int correct, i;
