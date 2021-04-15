@@ -12,7 +12,7 @@ int main()
     Queue q;
     Node **trees;
     Node *nullNode;
-    
+
     nullNode = NULL;
 
     do
@@ -36,6 +36,7 @@ int main()
     } while (!correct);
 
     qInit(&q);
+    srand(time(NULL));
 
     for (i = 0; i < atoi(input); i++)
     {
@@ -73,6 +74,7 @@ int main()
             {
                 if (q.sym[j] == 'A')
                 {
+                    /*AddNode(q.data[j], &trees[i], &nullNode);*/
                     AddNode(q.data[j], &trees[i], &nullNode);
                 }
                 else
@@ -83,6 +85,7 @@ int main()
         }
     }
 
+    printf("ok");
     return 0;
 }
 
@@ -105,7 +108,7 @@ void qAdd(struct queue *q, int x, int y, char z)
     }
     else
     {
-        printf("Очередь полна!\n");
+        printf("Queue is full!\n");
     }
 }
 
@@ -165,7 +168,7 @@ void AddNode(int data, Node **root, Node **parent)
     {
         *root = (Node *)calloc(1, sizeof(Node));
 
-        if(*root == NULL)
+        if (*root == NULL)
         {
             printf("Not enough memory!");
             exit(0);
@@ -211,25 +214,21 @@ Node *SearchNode(Node **root, int data)
 
 Node *MinRightNode(Node **root)
 {
-    Node *l;
-
-    l = *root;
-
-    if (l->right != NULL)
+    if ((*root)->right != NULL)
     {
-        l = l->right;
+        (*root) = (*root)->right;
     }
     else
     {
         return NULL;
     }
 
-    while (l->left != NULL)
+    while ((*root)->left != NULL)
     {
-        l = l->left;
+        (*root) = (*root)->left;
     }
 
-    return l;
+    return *root;
 }
 
 void DeleteNode(Node **root, int data)

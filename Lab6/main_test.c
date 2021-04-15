@@ -27,11 +27,11 @@ void Test1SearchNode()
 
     root = NULL;
     AddNode(12, &root, &nullNode);
-    AddNode(34, &root, &nullNode);
+    AddNode(34,&root, &nullNode);
     AddNode(23, &root, &nullNode);
     AddNode(67, &root, &nullNode);
     AddNode(21, &root, &nullNode);
-    assert(SearchNode(&root, 67)->data == 67);
+    assert(SearchNode(&root, 67)->data = 67);
 }
 
 void Test2SearchNode()
