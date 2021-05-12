@@ -1,0 +1,634 @@
+        -:    0:Source:main.c
+        -:    0:Graph:main.gcno
+        -:    0:Data:main.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:#include <stdio.h>
+        -:    2:#include <malloc.h>
+        -:    3:#include <string.h>
+        -:    4:#include "main.h"
+        -:    5:
+        -:    6:#ifndef TESTING
+        -:    7:
+        -:    8:int main()
+        -:    9:{
+        -:   10:    FILE *f;
+        -:   11:    Cities cities;
+        -:   12:    City city;
+        -:   13:    RestPlace restPlace;
+        -:   14:    Monument monument;
+        -:   15:    char temp[1000];
+        -:   16:    char str[100];
+        -:   17:    char comment[1000];
+        -:   18:    int i;
+        -:   19:    int filling;
+        -:   20:    int select;
+        -:   21:    NodeC *node;
+        -:   22:    NodeRP *node1;
+        -:   23:    NodeM *node2;
+        -:   24:
+        -:   25:    cities = CitiesCreate();
+        -:   26:    city.restPlaces = RestPlacesCreate();
+        -:   27:    city.monuments = MonumentsCreate();
+        -:   28:    i = 0;
+        -:   29:    filling = 0;
+        -:   30:    select = 0;
+        -:   31:
+        -:   32:    do
+        -:   33:    {
+        -:   34:        f = fopen("DataBase.txt", "r");
+        -:   35:
+        -:   36:        if (f == NULL)
+        -:   37:        {
+        -:   38:            printf("Failed to open file!");
+        -:   39:        }
+        -:   40:    } while (f == NULL);
+        -:   41:
+        -:   42:    while (1)
+        -:   43:    {
+        -:   44:        if (fgets(temp, 100, f) == NULL)
+        -:   45:        {
+        -:   46:            if (!feof(f))
+        -:   47:            {
+        -:   48:                printf("Error reading from file");
+        -:   49:                fclose(f);
+        -:   50:                return 0;
+        -:   51:            }
+        -:   52:            else
+        -:   53:            {
+        -:   54:                fclose(f);
+        -:   55:                break;
+        -:   56:            }
+        -:   57:        }
+        -:   58:        else
+        -:   59:        {
+        -:   60:            temp[strlen(temp) - 1] = '\0';
+        -:   61:
+        -:   62:            if (strcmp(temp, "><") == 0)
+        -:   63:            {
+        -:   64:                select = 1;
+        -:   65:            }
+        -:   66:            else if (strcmp(temp, "<>") == 0)
+        -:   67:            {
+        -:   68:                filling = 0;
+        -:   69:                select = 0;
+        -:   70:                CitiesAdd(&cities, city);
+        -:   71:                city.restPlaces = RestPlacesCreate();
+        -:   72:                city.monuments = MonumentsCreate();
+        -:   73:            }
+        -:   74:            else
+        -:   75:            {
+        -:   76:
+        -:   77:                if (filling)
+        -:   78:                {
+        -:   79:                    if (select == 0)
+        -:   80:                    {
+        -:   81:                        i++;
+        -:   82:
+        -:   83:                        if (i == 1)
+        -:   84:                        {
+        -:   85:                            restPlace.added = atoi(temp);
+        -:   86:                        }
+        -:   87:                        else if (i == 2)
+        -:   88:                        {
+        -:   89:                            strcpy(restPlace.name, temp);
+        -:   90:                        }
+        -:   91:                        else if (i == 3)
+        -:   92:                        {
+        -:   93:                            strcpy(restPlace.address, temp);
+        -:   94:                        }
+        -:   95:                        else if (i == 4)
+        -:   96:                        {
+        -:   97:                            strcpy(restPlace.activity, temp);
+        -:   98:                        }
+        -:   99:                        else if (i == 5)
+        -:  100:                        {
+        -:  101:                            strcpy(restPlace.time, temp);
+        -:  102:                        }
+        -:  103:                        else if (i == 6)
+        -:  104:                        {
+        -:  105:                            strcpy(restPlace.comment, temp);
+        -:  106:                            i = 0;
+        -:  107:                            RestPlacesAdd(&city.restPlaces, restPlace);
+        -:  108:                        }
+        -:  109:                    }
+        -:  110:                    else
+        -:  111:                    {
+        -:  112:                        i++;
+        -:  113:
+        -:  114:                        if (i == 1)
+        -:  115:                        {
+        -:  116:                            monument.added = atoi(temp);
+        -:  117:                        }
+        -:  118:                        else if (i == 2)
+        -:  119:                        {
+        -:  120:                            strcpy(monument.name, temp);
+        -:  121:                        }
+        -:  122:                        else if (i == 3)
+        -:  123:                        {
+        -:  124:                            strcpy(monument.address, temp);
+        -:  125:                        }
+        -:  126:                        else if (i == 4)
+        -:  127:                        {
+        -:  128:                            strcpy(monument.description, temp);
+        -:  129:                        }
+        -:  130:                        else if (i == 5)
+        -:  131:                        {
+        -:  132:                            strcpy(monument.comment, temp);
+        -:  133:                            i = 0;
+        -:  134:                            MonumentsAdd(&city.monuments, monument);
+        -:  135:                        }
+        -:  136:                    }
+        -:  137:                }
+        -:  138:                else
+        -:  139:                {
+        -:  140:                    i++;
+        -:  141:
+        -:  142:                    if (i == 1)
+        -:  143:                    {
+        -:  144:                        city.added = atoi(temp);
+        -:  145:                    }
+        -:  146:                    else if (i == 2)
+        -:  147:                    {
+        -:  148:                        strcpy(city.name, temp);
+        -:  149:                        i = 0;
+        -:  150:                        filling = 1;
+        -:  151:                    }
+        -:  152:                }
+        -:  153:            }
+        -:  154:        }
+        -:  155:    }
+        -:  156:
+        -:  157:    system("cls");
+        -:  158:
+        -:  159:    while (1)
+        -:  160:    {
+        -:  161:        printf("1 - Select a city\n2 - Find a hotel\n3 - Book\n0 - Exit\n");
+        -:  162:        gets(temp);
+        -:  163:
+        -:  164:        if (strcmp(temp, "1") == 0)
+        -:  165:        {
+        -:  166:            system("cls");
+        -:  167:
+        -:  168:            while (1)
+        -:  169:            {
+        -:  170:                ListCities(cities, 0);
+        -:  171:                printf("0 - Back\nEnter a city: ");
+        -:  172:                gets(temp);
+        -:  173:                system("cls");
+        -:  174:
+        -:  175:                if (strcmp(temp, "0") == 0)
+        -:  176:                {
+        -:  177:                    break;
+        -:  178:                }
+        -:  179:                else
+        -:  180:                {
+        -:  181:                    if (FindCity(cities, temp) != NULL)
+        -:  182:                    {
+        -:  183:                        strcpy(str, temp);
+        -:  184:                        system("cls");
+        -:  185:
+        -:  186:                        while (1)
+        -:  187:                        {
+        -:  188:                            CityPrint(cities, str, 0, 0);
+        -:  189:                            printf("0 - Back\nAdd to the book: ");
+        -:  190:                            gets(temp);
+        -:  191:                            system("cls");
+        -:  192:
+        -:  193:                            if (strcmp(temp, "0") == 0)
+        -:  194:                            {
+        -:  195:                                break;
+        -:  196:                            }
+        -:  197:                            else
+        -:  198:                            {
+        -:  199:                                if (FindPlace(cities, temp))
+        -:  200:                                {
+        -:  201:                                    printf("Enter a comment: ");
+        -:  202:                                    gets(comment);
+        -:  203:                                    AddToBook(&cities, temp, comment);
+        -:  204:                                    system("cls");
+        -:  205:                                    printf("Added\n\n");
+        -:  206:                                }
+        -:  207:                                else
+        -:  208:                                {
+        -:  209:                                    printf("Place is not founded\n\n");
+        -:  210:                                }
+        -:  211:                            }
+        -:  212:                        }
+        -:  213:                    }
+        -:  214:                    else
+        -:  215:                    {
+        -:  216:                        printf("City is not founded\n\n");
+        -:  217:                    }
+        -:  218:                }
+        -:  219:            }
+        -:  220:        }
+        -:  221:        else if (strcmp(temp, "2") == 0)
+        -:  222:        {
+        -:  223:            system("cls");
+        -:  224:            printf("Enter a city: ");
+        -:  225:            gets(temp);
+        -:  226:            system("cls");
+        -:  227:            if (CityPrint(cities, temp, 0, 1) == 1)
+        -:  228:            {
+        -:  229:                printf("Hotel is not founded\n\n");
+        -:  230:            }
+        -:  231:        }
+        -:  232:        else if (strcmp(temp, "3") == 0)
+        -:  233:        {
+        -:  234:            system("cls");
+        -:  235:
+        -:  236:            while (1)
+        -:  237:            {
+        -:  238:                if (ListCities(cities, 1) == 1)
+        -:  239:                {
+        -:  240:                    printf("Book is empty\n\n");
+        -:  241:                }
+        -:  242:
+        -:  243:                printf("0 - Back\nEnter a city: ");
+        -:  244:                gets(temp);
+        -:  245:                system("cls");
+        -:  246:
+        -:  247:                if (strcmp(temp, "0") == 0)
+        -:  248:                {
+        -:  249:                    break;
+        -:  250:                }
+        -:  251:                else
+        -:  252:                {
+        -:  253:                    CityPrint(cities, temp, 1, 0);
+        -:  254:                }
+        -:  255:            }
+        -:  256:        }
+        -:  257:        else if (strcmp(temp, "0") == 0)
+        -:  258:        {
+        -:  259:            f = fopen("DataBase.txt", "w");
+        -:  260:
+        -:  261:            if (f == NULL)
+        -:  262:            {
+        -:  263:                printf("Failed to open!");
+        -:  264:                return 0;
+        -:  265:            }
+        -:  266:
+        -:  267:            node = cities.head;
+        -:  268:
+        -:  269:            while (node)
+        -:  270:            {
+        -:  271:                fprintf(f, "%d\n", node->data.added);
+        -:  272:                fprintf(f, "%s\n", node->data.name);
+        -:  273:                node1 = node->data.restPlaces.head;
+        -:  274:
+        -:  275:                while (node1)
+        -:  276:                {
+        -:  277:                    fprintf(f, "%d\n", node1->data.added);
+        -:  278:                    fprintf(f, "%s\n", node1->data.name);
+        -:  279:                    fprintf(f, "%s\n", node1->data.address);
+        -:  280:                    fprintf(f, "%s\n", node1->data.activity);
+        -:  281:                    fprintf(f, "%s\n", node1->data.time);
+        -:  282:                    fprintf(f, "%s\n", node1->data.comment);
+        -:  283:                    node1 = node1->next;
+        -:  284:                }
+        -:  285:
+        -:  286:                fprintf(f, "><\n");
+        -:  287:                node2 = node->data.monuments.head;
+        -:  288:
+        -:  289:                while (node2)
+        -:  290:                {
+        -:  291:                    fprintf(f, "%d\n", node2->data.added);
+        -:  292:                    fprintf(f, "%s\n", node2->data.name);
+        -:  293:                    fprintf(f, "%s\n", node2->data.address);
+        -:  294:                    fprintf(f, "%s\n", node2->data.description);
+        -:  295:                    fprintf(f, "%s\n", node2->data.comment);
+        -:  296:                    node2 = node2->next;
+        -:  297:                }
+        -:  298:
+        -:  299:                fprintf(f, "<>\n");
+        -:  300:                node = node->next;
+        -:  301:            }
+        -:  302:
+        -:  303:            fclose(f);
+        -:  304:            break;
+        -:  305:        }
+        -:  306:        else
+        -:  307:        {
+        -:  308:            system("cls");
+        -:  309:        }
+        -:  310:    }
+        -:  311:
+        -:  312:    return 0;
+        -:  313:}
+        -:  314:
+        -:  315:#endif
+        -:  316:
+       11:  317:RestPlaces RestPlacesCreate()
+        -:  318:{
+       11:  319:    RestPlaces list = {NULL, NULL, 0};
+       11:  320:    return list;
+        -:  321:}
+        -:  322:
+       18:  323:void RestPlacesAdd(RestPlaces *list, RestPlace data)
+        -:  324:{
+        -:  325:    NodeRP *node;
+        -:  326:
+       18:  327:    node = (NodeRP *)malloc(sizeof(NodeRP));
+        -:  328:
+       18:  329:    if(node == NULL)
+        -:  330:    {
+    #####:  331:        printf("Not enough memory!");
+    #####:  332:        exit(0);
+        -:  333:    }
+        -:  334:
+       18:  335:    node->data = data;
+       18:  336:    node->next = node->prev = NULL;
+        -:  337:
+       18:  338:    if (list->head == NULL)
+        -:  339:    {
+        9:  340:        list->head = list->tail = node;
+        -:  341:    }
+        -:  342:    else
+        -:  343:    {
+        9:  344:        list->tail->next = node;
+        9:  345:        node->prev = list->tail;
+        9:  346:        list->tail = node;
+        -:  347:    }
+        -:  348:
+       18:  349:    list->size++;
+       18:  350:}
+        -:  351:
+       11:  352:Monuments MonumentsCreate()
+        -:  353:{
+       11:  354:    Monuments list = {NULL, NULL, 0};
+       11:  355:    return list;
+        -:  356:}
+        -:  357:
+       18:  358:void MonumentsAdd(Monuments *list, Monument data)
+        -:  359:{
+        -:  360:    NodeM *node;
+        -:  361:
+       18:  362:    node = (NodeM *)malloc(sizeof(NodeM));
+        -:  363:
+       18:  364:    if(node == NULL)
+        -:  365:    {
+    #####:  366:        printf("Not enough memory!");
+    #####:  367:        exit(0);
+        -:  368:    }
+        -:  369:
+       18:  370:    node->data = data;
+       18:  371:    node->next = node->prev = NULL;
+        -:  372:
+       18:  373:    if (list->head == NULL)
+        -:  374:    {
+        9:  375:        list->head = list->tail = node;
+        -:  376:    }
+        -:  377:    else
+        -:  378:    {
+        9:  379:        list->tail->next = node;
+        9:  380:        node->prev = list->tail;
+        9:  381:        list->tail = node;
+        -:  382:    }
+        -:  383:
+       18:  384:    list->size++;
+       18:  385:}
+        -:  386:
+        8:  387:Cities CitiesCreate()
+        -:  388:{
+        8:  389:    Cities list = {NULL, NULL, 0};
+        8:  390:    return list;
+        -:  391:}
+        -:  392:
+       12:  393:void CitiesAdd(Cities *list, City data)
+        -:  394:{
+        -:  395:    NodeC *node;
+        -:  396:
+       12:  397:    node = (NodeC *)malloc(sizeof(NodeC));
+        -:  398:
+       12:  399:    if(node == NULL)
+        -:  400:    {
+    #####:  401:        printf("Not enough memory!");
+    #####:  402:        exit(0);
+        -:  403:    }
+        -:  404:
+       12:  405:    node->data = data;
+       12:  406:    node->next = node->prev = NULL;
+        -:  407:
+       12:  408:    if (list->head == NULL)
+        -:  409:    {
+        6:  410:        list->head = list->tail = node;
+        -:  411:    }
+        -:  412:    else
+        -:  413:    {
+        6:  414:        list->tail->next = node;
+        6:  415:        node->prev = list->tail;
+        6:  416:        list->tail = node;
+        -:  417:    }
+        -:  418:
+       12:  419:    list->size++;
+       12:  420:}
+        -:  421:
+        3:  422:int ListCities(Cities cities, int check)
+        -:  423:{
+        -:  424:    NodeC *node;
+        -:  425:    int ret;
+        3:  426:    node = cities.head;
+        3:  427:    ret = 0;
+        -:  428:
+        3:  429:    if (check == 1)
+        -:  430:    {
+        2:  431:        ret = 1;
+        -:  432:    }
+        -:  433:
+       12:  434:    while (node)
+        -:  435:    {
+        6:  436:        if (node->data.added == 1 || node->data.added == check)
+        -:  437:        {
+        3:  438:            printf("%s\n", node->data.name);
+        3:  439:            ret = 0;
+        -:  440:        }
+        -:  441:
+        6:  442:        node = node->next;
+        -:  443:    }
+        -:  444:
+        3:  445:    printf("\n");
+        3:  446:    return ret;
+        -:  447:}
+        -:  448:
+        7:  449:NodeC *FindCity(Cities cities, char *name)
+        -:  450:{
+        -:  451:    NodeC *node;
+        -:  452:    int finded;
+        7:  453:    node = cities.head;
+        7:  454:    finded = 0;
+        -:  455:
+       18:  456:    while (node)
+        -:  457:    {
+       10:  458:        if (strcmp(node->data.name, name) == 0)
+        -:  459:        {
+        6:  460:            finded = 1;
+        6:  461:            break;
+        -:  462:        }
+        -:  463:
+        4:  464:        node = node->next;
+        -:  465:    }
+        -:  466:
+        7:  467:    if (finded)
+        -:  468:    {
+        6:  469:        return node;
+        -:  470:    }
+        -:  471:    else
+        -:  472:    {
+        1:  473:        return NULL;
+        -:  474:    }
+        -:  475:}
+        -:  476:
+        5:  477:int FindPlace(Cities cities, char *name)
+        -:  478:{
+        -:  479:    NodeC *node;
+        -:  480:    NodeRP *node1;
+        -:  481:    NodeM *node2;
+        -:  482:    int finded;
+        5:  483:    node = cities.head;
+        5:  484:    finded = 0;
+        -:  485:
+       20:  486:    while (node)
+        -:  487:    {
+       10:  488:        node1 = node->data.restPlaces.head;
+        -:  489:
+       40:  490:        while (node1)
+        -:  491:        {
+       20:  492:            if (strcmp(node1->data.name, name) == 0)
+        -:  493:            {
+        1:  494:                finded = 1;
+        -:  495:            }
+        -:  496:
+       20:  497:            node1 = node1->next;
+        -:  498:        }
+        -:  499:
+       10:  500:        node2 = node->data.monuments.head;
+        -:  501:
+       40:  502:        while (node2)
+        -:  503:        {
+       20:  504:            if (strcmp(node2->data.name, name) == 0)
+        -:  505:            {
+        2:  506:                finded = 1;
+        -:  507:            }
+        -:  508:
+       20:  509:            node2 = node2->next;
+        -:  510:        }
+        -:  511:
+       10:  512:        node = node->next;
+        -:  513:    }
+        -:  514:
+        5:  515:    return finded;
+        -:  516:}
+        -:  517:
+        2:  518:void AddToBook(Cities *cities, char *name, char *comment)
+        -:  519:{
+        -:  520:    NodeC *node;
+        -:  521:    NodeRP *node1;
+        -:  522:    NodeM *node2;
+        2:  523:    node = cities->head;
+        -:  524:
+        8:  525:    while (node)
+        -:  526:    {
+        4:  527:        node1 = node->data.restPlaces.head;
+        -:  528:
+       16:  529:        while (node1)
+        -:  530:        {
+        8:  531:            if (strcmp(node1->data.name, name) == 0)
+        -:  532:            {
+        1:  533:                node->data.added = 1;
+        1:  534:                node1->data.added = 1;
+        1:  535:                strcpy(node1->data.comment, comment);
+        -:  536:            }
+        -:  537:
+        8:  538:            node1 = node1->next;
+        -:  539:        }
+        -:  540:
+        4:  541:        node2 = node->data.monuments.head;
+        -:  542:
+       16:  543:        while (node2)
+        -:  544:        {
+        8:  545:            if (strcmp(node2->data.name, name) == 0)
+        -:  546:            {
+        1:  547:                node->data.added = 1;
+        1:  548:                node2->data.added = 1;
+        1:  549:                strcpy(node2->data.comment, comment);
+        -:  550:            }
+        -:  551:
+        8:  552:            node2 = node2->next;
+        -:  553:        }
+        -:  554:
+        4:  555:        node = node->next;
+        -:  556:    }
+        2:  557:}
+        -:  558:
+        4:  559:int CityPrint(Cities cities, char *name, int check, int hotel)
+        -:  560:{
+        -:  561:    NodeC *node;
+        -:  562:    NodeRP *node1;
+        -:  563:    NodeM *node2;
+        -:  564:    int ret;
+        4:  565:    node = FindCity(cities, name);
+        4:  566:    ret = 0;
+        -:  567:
+        4:  568:    if (check == 0 && hotel == 1)
+        -:  569:    {
+        2:  570:        ret = 1;
+        -:  571:    }
+        -:  572:
+        4:  573:    if (node != NULL && (node->data.added == 1 || node->data.added == check))
+        -:  574:    {
+        4:  575:        printf("%s\n", node->data.name);
+        4:  576:        node1 = node->data.restPlaces.head;
+        -:  577:
+       16:  578:        while (node1)
+        -:  579:        {
+        8:  580:            if (strcmp(node1->data.activity, "Hotel") == 0 || hotel == 0)
+        -:  581:            {
+        5:  582:                if (node1->data.added == 1 || node1->data.added == check)
+        -:  583:                {
+        5:  584:                    printf("\tName: %s\n", node1->data.name);
+        5:  585:                    printf("\tAddress: %s\n", node1->data.address);
+        5:  586:                    printf("\tActivity: %s\n", node1->data.activity);
+        5:  587:                    printf("\tWorking hours: %s\n", node1->data.time);
+        -:  588:
+        5:  589:                    if (check)
+        -:  590:                    {
+        2:  591:                        printf("\tComment: %s\n", node1->data.comment);
+        -:  592:                    }
+        -:  593:
+        5:  594:                    printf("\n");
+        5:  595:                    ret = 0;
+        -:  596:                }
+        -:  597:            }
+        -:  598:
+        8:  599:            node1 = node1->next;
+        -:  600:        }
+        -:  601:
+        4:  602:        node2 = node->data.monuments.head;
+        -:  603:
+        4:  604:        if (hotel == 0)
+        -:  605:        {
+        8:  606:            while (node2)
+        -:  607:            {
+        4:  608:                if (node2->data.added == 1 || node2->data.added == check)
+        -:  609:                {
+        4:  610:                    printf("\tName: %s\n", node2->data.name);
+        4:  611:                    printf("\tAddress: %s\n", node2->data.address);
+        4:  612:                    printf("\tDescription: %s\n", node2->data.description);
+        -:  613:
+        4:  614:                    if (check)
+        -:  615:                    {
+        2:  616:                        printf("\tComment: %s\n", node2->data.comment);
+        -:  617:                    }
+        -:  618:
+        4:  619:                    printf("\n");
+        4:  620:                    ret = 0;
+        -:  621:                }
+        -:  622:
+        4:  623:                node2 = node2->next;
+        -:  624:            }
+        -:  625:        }
+        -:  626:    }
+        -:  627:
+        4:  628:    return ret;
+        -:  629:}
